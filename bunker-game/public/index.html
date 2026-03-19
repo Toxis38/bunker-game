@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ БУНКЕР: Выживание</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <h1 class="game-title">🛡️ БУНКЕР</h1>
+            <p class="subtitle">Выживание в апокалипсисе</p>
+            
+            <div class="login-form">
+                <div class="input-group">
+                    <label>Ваше имя</label>
+                    <input type="text" id="nickname" placeholder="Введите имя..." maxlength="15" autocomplete="off">
+                </div>
+                
+                <button class="btn primary large" onclick="createRoom()">✨ Создать комнату</button>
+                
+                <div class="divider"><span>ИЛИ</span></div>
+                
+                <div class="input-group">
+                    <label>Код комнаты</label>
+                    <div class="code-input-wrapper">
+                        <input type="text" id="room-code-input" placeholder="XXXXXX" maxlength="6" autocomplete="off" style="text-transform: uppercase;">
+                        <button class="btn secondary" onclick="joinRoom()">🚪 Войти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lobby-screen" class="screen">
+        <header>
+            <div class="room-info">
+                <span id="room-code-display" class="room-code">ROOM: XXXXXX</span>
+                <button class="btn small secondary" onclick="copyRoomCode()" id="copy-btn">📋</button>
+            </div>
+            <div class="scenario-preview">
+                <h3 id="scenario-title">Загрузка...</h3>
+                <p id="scenario-desc">...</p>
+            </div>
+        </header>
+
+        <div class="lobby-content">
+            <div class="players-panel">
+                <h3>👥 Игроки (<span id="player-count">1</span>/8)</h3>
+                <div id="lobby-players-list"></div>
+            </div>
+
+            <div class="start-panel">
+                <div id="start-requirement" class="requirement">⚠️ Минимум 4 игрока</div>
+                <button id="start-game-btn" class="btn primary large" onclick="startGame()" disabled>🎮 НАЧАТЬ ИГРУ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-screen" class="screen">
+        <div class="game-header">
+            <div class="scenario-banner">
+                <h2 id="scenario-title-game">Сценарий</h2>
+                <p id="scenario-desc-game">Описание...</p>
+                <span id="scenario-duration" class="duration">0 лет</span>
+            </div>
+            <div class="players-table-wrapper">
+    <div id="players-table" class="players-table"></div>
+</div>
+
+<div class="game-area">
+            <div class="game-info">
+                <div class="round-badge">Раунд: <b id="round-display">1</b>/3</div>
+                <div class="turn-badge" id="turn-display">Ход: <b>...</b></div>
+            </div>
+        </div>
+
+        <div id="voting-info" class="round-status">🛡️ Раунд 1: Безопасная зона</div>
+
+        <div id="closed-room-alert" class="alert hidden">
+            🚪 <b>ЗАКРЫТАЯ КОМНАТА ОТКРЫТА!</b> Найдены: <span id="closed-room-items">...</span>
+        </div>
+
+        <div class="game-area">
+            <div class="my-cards-panel">
+                <h3>🎴 Ваши карты <small>(видны только вам)</small></h3>
+                <div id="my-cards-grid" class="cards-grid"></div>
+            </div>
+
+            <div class="players-panel-game">
+                <h3>👁️ Игроки</h3>
+                <div id="game-players-list"></div>
+            </div>
+        </div>
+
+        <div id="turn-controls" class="controls-panel">
+            <p class="hint">💡 В ваш ход: кликните на карту, чтобы открыть её</p>
+            <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                <button id="end-turn-btn" class="btn primary" onclick="endTurn()" disabled>✅ Завершить ход</button>
+                <button id="end-game-btn" class="btn danger hidden" onclick="endGame()">🔚 Завершить игру</button>
+            </div>
+        </div>
+
+        <div id="voting-panel" class="panel hidden">
+            <h3>🗳️ ГОЛОСОВАНИЕ: Кто покинет бункер?</h3>
+            <p class="hint">Выберите игрока для изгнания</p>
+            <div id="vote-buttons" class="vote-buttons"></div>
+        </div>
+
+        <div id="event-log" class="event-log"></div>
+    </div>
+
+    <div id="end-screen" class="screen">
+        <h1>🏁 Игра завершена</h1>
+        <div id="end-result"></div>
+        <button class="btn primary large" onclick="location.reload()">🔄 Новая игра</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
